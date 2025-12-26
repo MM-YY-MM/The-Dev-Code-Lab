@@ -2,6 +2,12 @@
 #include "clsUtil.h"
 using namespace std;
 
+string GetRandomlyPrefixNumPhoneEgy(short RandomPrefix)
+{
+    string arrPrefix[4] = {"+2010","+2011","+2012","+2015"};
+    return arrPrefix[RandomPrefix - 1];
+}
+
 //It may be specific to each country, but its format is useful for generating Egyptian numbers.
 static string GenerateNumberPhone(string Pre_Phone = "+2010", short Length = 8)
 {
@@ -15,50 +21,31 @@ static string GenerateNumberPhone(string Pre_Phone = "+2010", short Length = 8)
     return Phone;
 }
 
-void FillArrayPhone(string arrPhone[],short Length, string PrefixNumEGP = "+2010")
+vector <string> GetPhoneNumberGenerateEgy(short Length)
 {
+    vector <string> vNumPhone;
     for (int i = 0; i < Length; i++)
     {
-        if (i <= 50)
-            arrPhone[i] = GenerateNumberPhone(PrefixNumEGP);
-        else if (i <= 100)
-        {
-            PrefixNumEGP = "+2012";
-            arrPhone[i] = GenerateNumberPhone(PrefixNumEGP);
-        }
-        else if (i <= 100)
-        {
-            PrefixNumEGP = "+2011";
-            arrPhone[i] = GenerateNumberPhone(PrefixNumEGP);
-        }
-        else
-        {
-            PrefixNumEGP = "+2015";
-            arrPhone[i] = GenerateNumberPhone(PrefixNumEGP);
-        }
+        vNumPhone.push_back(GenerateNumberPhone(GetRandomlyPrefixNumPhoneEgy(clsUtil::RandomNumber(1, 4)), 8));
     }
+    return vNumPhone;
 }
 
-void PrintArray(string arrPhone[])
+void PrintVector(vector <string> vNumPhone)
 {
-    for (int i = 0; i < 300; i++)
+    vector <string> ::iterator iter;
+    for (iter = vNumPhone.begin(); iter != vNumPhone.end(); ++iter)
     {
-        cout << arrPhone[i] << endl;
+        cout << *iter << "\n";
     }
 }
 
 int main()
 {
     clsUtil::Srand();
-    string arrPhone[300];
-    string PrefixNumEGP = "+2010";
-
-    //Fill Array
-    FillArrayPhone(arrPhone, 300, PrefixNumEGP);
-
-    //Print
-    PrintArray(arrPhone);
-
+    vector <string> vNumPhone = GetPhoneNumberGenerateEgy(1000);
+    PrintVector(vNumPhone);
+    
     //system("pause>0");
     return 0;
 }
